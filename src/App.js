@@ -145,51 +145,100 @@ const gifts = [
 // }
 
 // *Todo List
+// function App(){
+//   const storageJobs = JSON.parse(localStorage.getItem('jobs'))
+//   console.log(storageJobs);
+
+//   const [job, setJob] = useState('')
+//   const [jobs,setJobs] = useState(() =>{
+//     const storageJobs = JSON.parse(localStorage.getItem('jobs'))
+//     return storageJobs
+//   })
+
+//   const handleSubmit = ()=>{
+//     setJobs(prev =>{
+//       const newJobs = [...prev,job]
+//       // Save to local storage
+//       const jsonJobs = JSON.stringify(newJobs)
+//       localStorage.setItem('jobs',jsonJobs)
+
+//       return newJobs
+//     })
+//     setJob('')
+//   }
+
+//   const handleDelete = (index)=>{
+//     setJobs((prev) =>{
+//       prev = jobs.filter((job) => job !== jobs[index]);
+//       const jsonJobs = JSON.stringify(prev);
+//       localStorage.setItem('jobs',jsonJobs);
+//       return prev;
+//     })
+//   }
+
+//   return (
+//     <div style={{padding: '32px'}} className="App">
+//       <input 
+//       value={job} 
+//       type="text" 
+//       onChange={e =>setJob(e.target.value)}/>
+//       <button onClick={handleSubmit}>Thêm việc</button>
+
+//       <ul>
+//         {jobs.map((job,index) => (
+//           <li key={index}>{job}<button 
+//           onClick={()=>handleDelete(index)} style={{marginLeft: '32px'}}>Xóa</button></li>
+//         ))}
+//       </ul>
+//     </div>
+//   )
+// }
+
 function App(){
-  const storageJobs = JSON.parse(localStorage.getItem('jobs'))
-  console.log(storageJobs);
+  // const storageJobs = JSON.parse(localStorage.getItem('jobs'));
 
-  const [job, setJob] = useState('')
-  const [jobs,setJobs] = useState(() =>{
-    const storageJobs = JSON.parse(localStorage.getItem('jobs'))
-    return storageJobs || []
-  })
+  const [jobs, setJobs] = useState(()=>{
+    const storageJobs = JSON.parse(localStorage.getItem('jobs'));
+    return storageJobs ?? []
+  });
+  const [job, setJob] = useState('');
 
-  const handleSubmit = ()=>{
+
+
+  const hanldeAdd = ()=>{
     setJobs(prev =>{
-      const newJobs = [...prev,job]
-      // Save to local storage
-      const jsonJobs = JSON.stringify(newJobs)
-      localStorage.setItem('jobs',jsonJobs)
-
-      return newJobs
-    })
-    setJob('')
+    const newJobs = [...prev,job]
+    // Lưu vào localstorage
+    const jobsJson = JSON.stringify(newJobs);
+    localStorage.setItem('jobs',jobsJson);
+    return newJobs || [];
+  })
+  setJob('')
   }
 
-  const handleDelete = (index)=>{
-    setJobs((prev) =>{
+  const handleDel = (index) => {
+    setJobs(prev =>{
       prev = jobs.filter((job) => job !== jobs[index]);
-      const jsonJobs = JSON.stringify(prev);
-      localStorage.setItem('jobs',jsonJobs);
-      return prev;
+      const jobsJson = JSON.stringify(prev);
+      localStorage.setItem('jobs',jobsJson);
+      return prev
     })
   }
 
   return (
-    <div style={{padding: '32px'}} className="App">
+    <div style={{paddingLeft:'32px'}} className="App">
       <input 
-      value={job} 
-      type="text" 
-      onChange={e =>setJob(e.target.value)}/>
-      <button onClick={handleSubmit}>Thêm việc</button>
-
+      type='text'
+      value={job}
+      onChange={e => setJob(e.target.value)}
+      />
+      <button onClick={hanldeAdd}>Thêm</button>
       <ul>
-        {jobs.map((job,index) => (
-          <li key={index}>{job}<button 
-          onClick={()=>handleDelete(index)} style={{marginLeft: '32px'}}>Xóa</button></li>
+        {jobs.map((job,index)=> (
+          <li key={index}>{job}<button style={{marginLeft:'50px'}} onClick={()=>handleDel(index)}>Xóa</button></li>
         ))}
       </ul>
+      
     </div>
   )
 }
